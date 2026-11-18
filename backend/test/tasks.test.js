@@ -35,3 +35,30 @@ test('GET /api/tasks devuelve las tareas creadas', async () => {
   assert.strictEqual(res.status, 200);
   assert.deepStrictEqual(res.body.map((t) => t.title), ['Una', 'Dos']);
 });
+
+test('PATCH /api/tasks/:id cambia done', async () => {
+  const { body: task } = await request(app).post('/api/tasks').send({ title: 'Estudiar' });
+
+  const res = await request(app).patch(`/api/tasks/${task.id}`).send({ done: true });
+
+  assert.strictEqual(res.status, 200);
+  assert.strictEqual(res.body.done, true);
+  assert.strictEqual(store.list()[0].done, true);
+});
+
+test('DELETE /api/tasks/:id elimina la tarea', async () => {
+  const { body: task } = await request(app).post('/api/tasks').send({ title: 'Borrar' });
+
+  const res = await request(app).delete(`/api/tasks/${task.id}`);
+
+  assert.strictEqual(res.status, 204);
+  assert.deepStrictEqual(store.list(), []);
+});
+
+test('PATCH y DELETE con id inexistente responden 404', async () => {
+  const patch = await request(app).patch('/api/tasks/99').send({ done: true });
+  const del = await request(app).delete('/api/tasks/99');
+
+  assert.strictEqual(patch.status, 404);
+  assert.strictEqual(del.status, 404);
+});
