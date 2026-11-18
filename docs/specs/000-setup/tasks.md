@@ -1,0 +1,9 @@
+# Tasks 000
+
+- [ ] T1: Crear /backend e instalar express, cors y supertest (dev)
+- [ ] T2: Crear app.js con GET /api/health e index.js que arranca el servidor
+- [ ] T3: Prueba unitaria de /api/health y script npm test
+- [ ] T4: Crear /frontend con Angular CLI
+- [ ] T5: Mostrar "TodoLite" y el estado de la API en AppComponent
+- [ ] T6: Prueba unitaria de AppComponent (muestra "TodoLite")
+- [ ] T7: Verificar los criterios de aceptación y que npm test y ng test pasen
