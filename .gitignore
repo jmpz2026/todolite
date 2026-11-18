@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.angular/
+coverage/
+.env
+.DS_Store
+.vscode/
+
+# Material de la guía (vive fuera del repo)
+*.pdf
+Spec-Driven-Development-guia-basica.md
