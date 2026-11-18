@@ -1,4 +1,22 @@
 <main>
   <h1>TodoLite</h1>
   <p>API: {{ apiStatus() }}</p>
+
+  <form (submit)="$event.preventDefault(); add()">
+    <input
+      type="text"
+      placeholder="Nueva tarea"
+      [value]="newTitle()"
+      (input)="newTitle.set($any($event.target).value)"
+    />
+    <button type="submit">Agregar</button>
+  </form>
+
+  <ul>
+    @for (task of tasks(); track task.id) {
+      <li>{{ task.title }}</li>
+    } @empty {
+      <li>No hay tareas.</li>
+    }
+  </ul>
 </main>

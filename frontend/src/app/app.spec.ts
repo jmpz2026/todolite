@@ -2,8 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { App } from './app';
+import { TaskService } from './task.service';
 
 describe('App', () => {
+  const api = 'http://localhost:3000/api';
   let httpMock: HttpTestingController;
 
   beforeEach(async () => {
@@ -19,23 +21,63 @@ describe('App', () => {
     httpMock.verify();
   });
 
-  it('muestra el texto "TodoLite"', async () => {
+  async function render() {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    httpMock.expectOne('http://localhost:3000/api/health').flush({ status: 'ok' });
+    httpMock.expectOne(`${api}/health`).flush({ status: 'ok' });
+    httpMock.expectOne(`${api}/tasks`).flush([{ id: 1, title: 'Comprar pan', done: false }]);
     await fixture.whenStable();
+    return fixture;
+  }
 
+  it('muestra el texto "TodoLite"', async () => {
+    const fixture = await render();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('TodoLite');
   });
 
   it('muestra "API: ok" cuando /api/health responde', async () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    httpMock.expectOne('http://localhost:3000/api/health').flush({ status: 'ok' });
-    await fixture.whenStable();
-
+    const fixture = await render();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('API: ok');
+  });
+
+  it('lista las tareas que devuelve el backend', async () => {
+    const fixture = await render();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('li')?.textContent).toContain('Comprar pan');
+  });
+
+  it('con el input vacío, Agregar no llama al servicio', async () => {
+    const fixture = await render();
+    const service = TestBed.inject(TaskService);
+    const createSpy = vi.spyOn(service, 'create');
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    const input = compiled.querySelector('input') as HTMLInputElement;
+    input.value = '   ';
+    input.dispatchEvent(new Event('input'));
+    (compiled.querySelector('button[type=submit]') as HTMLButtonElement).click();
+    await fixture.whenStable();
+
+    expect(createSpy).not.toHaveBeenCalled();
+  });
+
+  it('al agregar un título, la tarea aparece en la lista', async () => {
+    const fixture = await render();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    const input = compiled.querySelector('input') as HTMLInputElement;
+    input.value = 'Lavar ropa';
+    input.dispatchEvent(new Event('input'));
+    (compiled.querySelector('button[type=submit]') as HTMLButtonElement).click();
+
+    const req = httpMock.expectOne(`${api}/tasks`);
+    expect(req.request.method).toBe('POST');
+    req.flush({ id: 2, title: 'Lavar ropa', done: false });
+    await fixture.whenStable();
+
+    expect(compiled.querySelectorAll('li').length).toBe(2);
+    expect(compiled.textContent).toContain('Lavar ropa');
   });
 });
