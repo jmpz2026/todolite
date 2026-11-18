@@ -5,5 +5,5 @@
 - [x] T3: Prueba unitaria de /api/health y script npm test
 - [x] T4: Crear /frontend con Angular CLI
 - [x] T5: Mostrar "TodoLite" y el estado de la API en AppComponent
-- [ ] T6: Prueba unitaria de AppComponent (muestra "TodoLite")
+- [x] T6: Prueba unitaria de AppComponent (muestra "TodoLite")
 - [ ] T7: Verificar los criterios de aceptación y que npm test y ng test pasen
