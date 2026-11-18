@@ -6,4 +6,4 @@
 - [x] T4: Crear /frontend con Angular CLI
 - [x] T5: Mostrar "TodoLite" y el estado de la API en AppComponent
 - [x] T6: Prueba unitaria de AppComponent (muestra "TodoLite")
-- [ ] T7: Verificar los criterios de aceptación y que npm test y ng test pasen
+- [x] T7: Verificar los criterios de aceptación y que npm test y ng test pasen
