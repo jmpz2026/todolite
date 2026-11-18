@@ -10,12 +10,12 @@ Poder gestionar una lista de tareas mientras la app está en uso.
 - Como usuario, quiero borrar una tarea.
 
 ## Criterios de aceptación
-- [ ] Al escribir un título y pulsar "Agregar", la tarea aparece en la lista.
-- [ ] No se puede agregar una tarea con título vacío.
-- [ ] Al marcar el checkbox, la tarea se ve tachada.
-- [ ] Al pulsar "Borrar", la tarea desaparece.
-- [ ] Al recargar la página, las tareas siguen ahí (mientras el backend siga encendido).
-- [ ] Hay pruebas unitarias para crear, listar, completar, borrar y para el
+- [x] Al escribir un título y pulsar "Agregar", la tarea aparece en la lista.
+- [x] No se puede agregar una tarea con título vacío.
+- [x] Al marcar el checkbox, la tarea se ve tachada.
+- [x] Al pulsar "Borrar", la tarea desaparece.
+- [x] Al recargar la página, las tareas siguen ahí (mientras el backend siga encendido).
+- [x] Hay pruebas unitarias para crear, listar, completar, borrar y para el
       título vacío, y todas pasan.
 
 ## Fuera de alcance

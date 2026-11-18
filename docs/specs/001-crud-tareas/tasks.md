@@ -7,4 +7,4 @@
 - [x] T5: Crear task.service.ts + task.service.spec.ts
 - [x] T6: UI de agregar y listar + prueba del título vacío
 - [x] T7: UI de completar y borrar
-- [ ] T8: Verificar los criterios de aceptación y que npm test y ng test pasen
+- [x] T8: Verificar los criterios de aceptación y que npm test y ng test pasen
