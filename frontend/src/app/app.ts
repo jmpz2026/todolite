@@ -34,4 +34,16 @@ export class App implements OnInit {
       this.newTitle.set('');
     });
   }
+
+  protected toggle(task: Task, done: boolean): void {
+    this.taskService.setDone(task.id, done).subscribe((updated) => {
+      this.tasks.update((tasks) => tasks.map((t) => (t.id === updated.id ? updated : t)));
+    });
+  }
+
+  protected remove(task: Task): void {
+    this.taskService.remove(task.id).subscribe(() => {
+      this.tasks.update((tasks) => tasks.filter((t) => t.id !== task.id));
+    });
+  }
 }

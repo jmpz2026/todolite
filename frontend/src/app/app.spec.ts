@@ -80,4 +80,35 @@ describe('App', () => {
     expect(compiled.querySelectorAll('li').length).toBe(2);
     expect(compiled.textContent).toContain('Lavar ropa');
   });
+
+  it('al marcar el checkbox, la tarea se ve tachada', async () => {
+    const fixture = await render();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    const checkbox = compiled.querySelector('li input[type=checkbox]') as HTMLInputElement;
+    checkbox.checked = true;
+    checkbox.dispatchEvent(new Event('change'));
+
+    const req = httpMock.expectOne(`${api}/tasks/1`);
+    expect(req.request.method).toBe('PATCH');
+    expect(req.request.body).toEqual({ done: true });
+    req.flush({ id: 1, title: 'Comprar pan', done: true });
+    await fixture.whenStable();
+
+    expect(compiled.querySelector('li label')?.classList).toContain('done');
+  });
+
+  it('al pulsar "Borrar", la tarea desaparece', async () => {
+    const fixture = await render();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    (compiled.querySelector('li button') as HTMLButtonElement).click();
+
+    const req = httpMock.expectOne(`${api}/tasks/1`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+    await fixture.whenStable();
+
+    expect(compiled.textContent).not.toContain('Comprar pan');
+  });
 });
